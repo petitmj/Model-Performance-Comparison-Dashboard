@@ -21,6 +21,6 @@ AI ElderCare Dashboard is a **machine learning-powered analytics platform** desi
 4️⃣ Use results to drive **data-driven decision-making** in elder care  
 
 ## Technologies Used  
-🛠 **Python, Pandas, Scikit-Learn, XGBoost, Boto3, Streamlit**  
+🛠 **Python, Pandas, Scikit-Learn, XGBoost, Boto3, Streamlit AWS**  
 
 ---  
