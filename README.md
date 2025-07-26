@@ -6,21 +6,29 @@ AI ElderCare Dashboard is a **machine learning-powered analytics platform** desi
 ✅ **Upload and preprocess datasets** (CSV/XLSX)  
 ✅ **Automated S3 integration** (checks and uploads datasets if missing)  
 ✅ **Handles missing values** using imputation techniques  
+
+
 ✅ **Supports multiple ML models**, including:  
-- Logistic Regression  
-- Random Forest  
-- Support Vector Machine (SVM)  
-- HistGradientBoostingClassifier (handles NaNs natively)  
-- XGBoost (optimized for large datasets)  
+🤖 Logistic Regression – Best for binary/multiclass classification, medical risk prediction, and simple tabular data  
+🌲 Random Forest – Great for tabular data, feature-rich datasets, and handling missing values  
+📈 HistGradientBoostingClassifier – Ideal for large tabular datasets with missing values  
+⚡ XGBoost – Optimized for large, complex tabular datasets and competitions  
+💡 LightGBM – Fast gradient boosting for large tabular datasets  
+🐱 CatBoost – Handles categorical features natively, good for mixed-type data  
+👥 K-Nearest Neighbors – Works well for small datasets and pattern recognition  
+🧠 MLP Neural Network – Suitable for complex relationships and larger datasets  
+✅ **Compare performance of selected models side-by-side**
 ✅ **Model performance metrics** (Accuracy, F1 Score, ROC AUC)  
 
 ## How It Works  
+
 1️⃣ Upload a dataset via the **Streamlit interface**  
-2️⃣ Select the **target column** and an **ML model**  
-3️⃣ Train the model and view **performance metrics**  
+2️⃣ Select the **target column** and one or more **ML models** to compare  
+3️⃣ Train the selected models and view **side-by-side performance metrics**  
 4️⃣ Use results to drive **data-driven decision-making** in elder care  
 
 ## Technologies Used  
-🛠 **Python, Pandas, Scikit-Learn, XGBoost, Boto3, Streamlit AWS**  
+
+🛠 **Python, Pandas, Scikit-Learn, XGBoost, LightGBM, CatBoost, Boto3, Streamlit**  
 
 ---  
