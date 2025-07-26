@@ -1,6 +1,6 @@
-# AI ElderCare Dashboard  
+# Model Performance Comparison Dashboard  
 
-AI ElderCare Dashboard is a **machine learning-powered analytics platform** designed to assist healthcare professionals and caregivers in **predicting patient outcomes** and **analyzing elderly care data**. The dashboard seamlessly integrates **AWS S3 storage, data preprocessing, and multiple ML models** to provide insightful predictions.  
+Model Performance Comparison Dashboard seamlessly integrates **AWS S3 storage, data preprocessing, and multiple ML models** to provide model performance comparisonons.  
 
 ## Features  
 ✅ **Upload and preprocess datasets** (CSV/XLSX)  
