@@ -9,9 +9,12 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.impute import SimpleImputer
 from sklearn.linear_model import LogisticRegression
 from sklearn.ensemble import RandomForestClassifier, HistGradientBoostingClassifier
-from sklearn.svm import SVC
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.neural_network import MLPClassifier
 from sklearn.metrics import accuracy_score, f1_score, roc_auc_score
 from xgboost import XGBClassifier
+from lightgbm import LGBMClassifier
+from catboost import CatBoostClassifier
 
 # AWS S3 Configuration
 S3_BUCKET_NAME = "arv7staging"
@@ -75,17 +78,36 @@ def preprocess_data(df, target_column):
     
     return X_train, X_test, y_train, y_test
 
+
 # Available models
 models = {
     "Logistic Regression": LogisticRegression(),
     "Random Forest": RandomForestClassifier(n_estimators=100),
-    "Support Vector Machine": SVC(probability=True),
     "HistGradientBoosting": HistGradientBoostingClassifier(),
-    "XGBoost": XGBClassifier(use_label_encoder=False, eval_metric='logloss')
+    "XGBoost": XGBClassifier(use_label_encoder=False, eval_metric='logloss'),
+    "LightGBM": LGBMClassifier(),
+    "CatBoost": CatBoostClassifier(verbose=0),
+    "K-Nearest Neighbors": KNeighborsClassifier(),
+    "MLP Neural Network": MLPClassifier(max_iter=500)
 }
 
+# Store outcomes for each model
+model_outcomes = {}
+
+def store_model_outcome(model_name, y_true, y_pred, y_proba):
+    outcome = {
+        "Accuracy": accuracy_score(y_true, y_pred),
+        "F1 Score": f1_score(y_true, y_pred),
+        "ROC AUC": roc_auc_score(y_true, y_proba) if y_proba is not None else "N/A"
+    }
+    model_outcomes[model_name] = outcome
+    return outcome
+
+def compare_model_outcomes():
+    return model_outcomes
+
 # Streamlit UI
-st.title("AI ElderCare Dashboard")
+st.title("Model Performance Dashboard")
 uploaded_file = st.file_uploader("Upload CSV/XLSX File", type=["csv", "xlsx"])
 
 if uploaded_file:
@@ -95,23 +117,18 @@ if uploaded_file:
     st.dataframe(df.head())
     
     target_column = st.selectbox("Select Target Column", df.columns)
-    selected_model = st.selectbox("Select Model", list(models.keys()))
+    selected_models = st.multiselect("Select Models to Compare", list(models.keys()), default=list(models.keys())[:2])
     
     if st.button("Train Model"):
         try:
             X_train, X_test, y_train, y_test = preprocess_data(df, target_column)
-            model = models[selected_model]
-            model.fit(X_train, y_train)
-            y_pred = model.predict(X_test)
-            y_proba = model.predict_proba(X_test)[:, 1] if hasattr(model, "predict_proba") else None
-            
-            results = {
-                "Accuracy": accuracy_score(y_test, y_pred),
-                "F1 Score": f1_score(y_test, y_pred),
-                "ROC AUC": roc_auc_score(y_test, y_proba) if y_proba is not None else "N/A"
-            }
-            
-            st.write("### Model Performance")
-            st.json(results)
+            for model_name in selected_models:
+                model = models[model_name]
+                model.fit(X_train, y_train)
+                y_pred = model.predict(X_test)
+                y_proba = model.predict_proba(X_test)[:, 1] if hasattr(model, "predict_proba") else None
+                store_model_outcome(model_name, y_test, y_pred, y_proba)
+            st.write("### Model Performance Comparison")
+            st.json(compare_model_outcomes())
         except Exception as e:
             st.error(f"Error: {e}")
